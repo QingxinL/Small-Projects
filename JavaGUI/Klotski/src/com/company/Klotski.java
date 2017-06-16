@@ -19,34 +19,61 @@ package com.company;
 import java.awt.*;
 import javax.swing.*;
 
-public class Klotski extends JFrame  {
-	 
+public class Klotski extends JPanel  {
+	 JFrame frame;
+
+
+
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		Klotski kl = new Klotski();
-		kl.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		kl.setSize(800,1000);
-		kl.setVisible(true);
-	}
-	
-	//Buttons&Images&Labels: 张飞，曹操，马超，赵云，关羽，黄忠，卒1&2&3&4，空格
-	
-
-	//constructor:
-	public Klotski() {
-
-
+	Klotski kl = new Klotski();
+	kl.window();
 
 	}
+
+	public void window(){
+		frame = new JFrame();
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setVisible(true);
+		frame.setSize(400,500);
+		frame.add(this);
+
+	}
+
+
+
+	//Components: 张飞，曹操，马超，赵云，关羽，黄忠，卒1&2&3&4，空格
+	
+
+
 	public void paintComponent (Graphics g){
-		Graphics2D g2d = (Graphics2D) g;
-		g2d.setColor(Color.BLACK);
-		g2d.fillRect(0,0,200,100);
-		g2d.drawString("This is a test",5,10);
-
+		g.setColor(Color.CYAN);
+		paintRect(g);
+		g.setColor(Color.MAGENTA);
+		drawStrings(g);
 	}
 
+	// paint all the rectangles
+	public void paintRect (Graphics g){
+		g.fillRoundRect(0,0,100,200,20,20);
+		g.fillRoundRect(100,0,200,200,20,20);
+		g.fillRoundRect(300,0,100,200,20,20);
+		g.fillRoundRect(0,200,100,200,20,20);
+		g.fillRoundRect(100,200,200,100,20,20);
+		g.fillRoundRect(300,200,100,200,20,20);
+		g.fillRoundRect(100,300,100,100,20,20);
+		g.fillRoundRect(200,300,100,100,20,20);
+		g.fillRoundRect(0,400,100,100,20,20);
+		g.fillRoundRect(300,400,100,100,20,20);
+	}
 
+	// draw all strings
+	public void drawStrings (Graphics g){
+		g.drawString("张飞", 50,100);
+		g.drawString("曹操", 200,100);
+		g.drawString("马超",350,100);
+
+	}
 	/*
 	switch:
 	change the grid x & grid y
