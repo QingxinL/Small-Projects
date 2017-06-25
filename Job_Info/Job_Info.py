@@ -10,44 +10,44 @@ each company with two files:
 one file with general information like Title and Websites 
 another file with specific requirements'''
 
+'''Second Revised Idea: Use Database not files - MongoDB'''
+
+
 import requests
 from bs4 import BeautifulSoup
-from File_Management import *
-
+from urllib.request import urlopen
+from urllib.request import urlparse
+import re
 
 # *** Can not scrape Google! ***
 #
 
 # Two Sigma:
 
-
-
-def jobScraping():
-    company_name='Two Sigma'
-    general = company_name + '_General.txt'  # Name & Relative Path
-    requirement = company_name + '_Requirement.txt'
+def jobScraping(url):
     page =1
-    url='https://careers.twosigma.com/careers/SearchJobs/?jobOffset=0' # initial page to start
+    #url='https://careers.twosigma.com/careers/SearchJobs/?3_33_3=%5B%22897%22%5D&jobOffset=0' # initial page to start
     while True:
-        source_code = requests.get(url)
-        plain_text = source_code.text
-        soup = BeautifulSoup(plain_text,'lxml')
+        html = urlopen(url)
+        soup = BeautifulSoup(html,'lxml')
         page+=1
 
         # General Info, include websites&job titles
         for link in soup.findAll('a',{'class':'mobileHide'}):
             href = link.get('href')
+            href = href.replace('Dash', '')
             print(href)
             title = link.string
             print(title)
-            append_to_file('Resources/'+general,title)
-            append_to_file('Resources/'+general,href)
 
+            getRequirement(href)
+
+            # TODO: Put all data into database
         if checkPageEnd(soup)==True:
             break
 
-        url = 'https://careers.twosigma.com/careers/SearchJobs/?jobOffset=' + str((page - 1) * 10)
-
+        #url = 'https://careers.twosigma.com/careers/SearchJobs/?jobOffset=' + str((page - 1) * 10)
+        url = 'https://careers.twosigma.com/careers/SearchJobs/?3_33_3=%5B%22897%22%5D&jobOffset=' + str((page - 1) * 10)
     print('End of Program')
 
 def checkPageEnd(soup):
@@ -57,4 +57,25 @@ def checkPageEnd(soup):
     return True
 
 
-jobScraping()
+def getRequirement(url):
+    # TODO: Find (Print) the requirements for each job - Finished !
+    html = urlopen(url)
+    soup = BeautifulSoup(html, 'lxml')
+
+    if(soup.find(text='Requirements Include:')!=None):
+        start = soup.find(text='Requirements Include:')
+    else:
+        start = soup.find(text=re.compile('[a-z]* qualifications')) #Handles other cases like 'Minimum Requirements'
+
+    print('Requirements Include: ')
+
+    requirements = start.find_next('ul').findAll('li')
+    for requirement in requirements:
+        print(requirement.text)
+
+    print('\n')
+
+
+execution_trading ='https://careers.twosigma.com/careers/SearchJobs/?3_33_3=%5B%22897%22%5D&jobOffset=0'
+
+jobScraping(execution_trading)
