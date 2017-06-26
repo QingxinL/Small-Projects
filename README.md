@@ -9,7 +9,7 @@ EightPuzzlePicture:
     - Second Version Eight Puzzle, with pictures and shuffle function
 
 Klotski:
-    - Also known as HuaRongDao (华容道) \n
+    - Also known as HuaRongDao (华容道) 
     - Use JavaFX. A GUI game 
     - In process...
 
